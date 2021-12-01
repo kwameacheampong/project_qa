@@ -1,9 +1,16 @@
 from application import db
 
 class Awards(db.Model):
-    class Players(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), nullable=False)
-    award_id = db.Column(db.Integer, db.ForeignKey('award.id'), nullable=False)
-    completed = db.Column(db.Boolean, nullable=False, defaclass Cities(db.Model):
+    name = db.Column(db.String(30), nullable=False)
+    club = db.column(db.String(20), nullable=False)
+    stats = db.column(db.Interger(), nullable=False)
+
+    players = db.relationship('players', backref = 'awards')    
+
+class Players(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(30), nullable=False)
+    club = db.column(db.String(20), nullable=False)
+    award_id = db.Column(db.Integer(), db.ForeignKey('award.id') 
     

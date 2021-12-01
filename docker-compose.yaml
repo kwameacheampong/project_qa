@@ -1,5 +1,6 @@
 version: "3.8"
 services:
+<<<<<<< HEAD
   frontend:
     build: ./frontend
     image: ${DOCKER_HUB_CREDS_USR}/todo-app-frontend:latest
@@ -11,10 +12,20 @@ services:
     build: ./backend
     image: ${DOCKER_HUB_CREDS_USR}/todo-app-backend:latest
     container_name: todo-app-backend
+=======
+  todo-app:
+    build: .
+    image: todo-app:latest
+    container_name: todo-app
+>>>>>>> ddceaf7d7a2c82b4d895ac8d798b7482a5015f89
     environment:
       DATABASE_URI:
       CREATE_SCHEMA:
     ports:
     - target: 5000
+<<<<<<< HEAD
       published: 5000
     
+=======
+      published: 80
+>>>>>>> ddceaf7d7a2c82b4d895ac8d798b7482a5015f89

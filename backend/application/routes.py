@@ -10,64 +10,77 @@ def home():
     Awards = award.query.all()
     return render_template('index.html', title="Home", Awards=Awards)
 
-@app.route('/create/award', methods=['GET','POST'])
+@app.route('/create/award', methods=['POST'])
 def create_awards():
-    form = AwardForm()
-    all_Awards = request.get(f"http://{backend_host}/read/allAwards").json()
-    for award in all_Awards["awards"]:
-      form.award.choices.append((award[id], award["name"]))
+    json = request.json
+    new_award = Award(
+        name = json["name"],
+        club = json["club"]
+        stats = json["stats"]
+    )
+    db.session.add(new_award)
+    db.session.commit()
+    return f"Award '{new_award.name}'' added to database"
 
-    if request.method == "POST":
-        response = request.post(f"http://{backend_host}/create/award", json={"name": form.name.data})
-        new_awards = Awards(description=form.description.data)
-        app.logger.info(f"Response: {response.txt")
-        return redirect(url_for('home'))
+@app.route('/create/players/<int:id>', methods=['GET','POST'])
+def create_player(award_id):
+     json = request.json
+    new_award = Award(
+        name = json["name"],
+        award_id = award_id,
+        club = json["club"]
+        stats = json["stats"]
+    )
+    db.session.add(new_award)
+    db.session.commit()
+    return f"Award '{new_award.name}' added to database"
 
-    return render_template("create_awards.html", title="Add a new awards", form=form)
-
-@app.route('/read/allAwards')
-def read_awards():
-     
-    Awards = award.query.all()
-    awards_dict = {"awards": []}
-    for awards in Awards:
-        awards_dict["awards"].append(   
-                      {
-                "description": awards.description,
-                "completed": awards.completed
-            }
+@app.route('/get/allAwards', methods=["GET"])
+def get_all_awards():
+    all_awards =Award.query.all()
+    json = {"awards": []}
+    for award in all_Awards:
+        player = []
+        for player in award.players:
+            player.append(
+                {
+                    "id": [player.id,
+                    "name": player.name,
+                    "award": player.award_id,
+                    "club": player.club
+                }
+            )
+        json["awards"].append(
+            {
+                "id":award.id,
+                "name": award.name,
+                "club": award.club,
+                "stats":award.stats,
+                "player": players
+            }                    
         )
-    return jsonify(awards_dict)
+    return jsonify(json)
 
-@app.route('/update/awards/<int:id>', methods=['GET','POST'])
+@app.route('/get/allPlayers/<int:id>', methods=['GET'])
+def get_player(id):     
+    players =Award.query.get(id).players
+    json = {"players": []}
+    for player in players:        
+            json["players"].append(
+                {
+                    "id": [player.id,
+                    "name": player.name,
+                    "award": player.award_id,
+                    "club": player.club
+                }
+            )
+        return jsonify(json)
+
+@app.route('/update/awards/<int:id>')
 def update_Awards(id):
-    form = AwardsForm()
+    data = request.json
     awards = Awards.query.get(id)
-
-    if request.method == "POST":
-        awards.description = form.description.data
-        db.session.commit()
-        return redirect(url_for('home'))
-
-    return render_template('update_awards.html', awards=awards, form=form)
-
-@app.route('/delete/awards/<int:id>')
-def delete_Awards(id):
-    awards = Awards.query.get(id)
-    db.session.delete(awards)
+    awards.updated = True
     db.session.commit()
     return redirect(url_for('home'))
 
-@app.route('/complete/awards/<int:id>')
-def complete_Awards(id):
-    awards = Awards.query.get(id)
-    awards.completed = True
-    db.session.commit()
-    return redirect(url_for('home'))
-
-@app.route('/incomplete/awards/<int:id>')
-def incomplete_Awards(id):
-    awards = Awards.query.get(id)
-    awards.completed = False
-    db.session.commit()
-    return redirect(url_for('home'))

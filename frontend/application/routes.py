@@ -10,27 +10,29 @@ def home():
     all_awards = awards.query.all()
     return render_template('index.html', title="Home", all_awards=all_awards)
 
-@app.route('/create/award', methods=['GET','POST'])
-def create_award():
-    form = awardForm()
-
-    if request.method == "POST":
-        new_award = Awards(description=form.description.data)
+@app.route('/create/player/<int:award_id>', methods=['GET','POST'])
+def create_player(award_id):
+    json = request.json
+    new_player = Player(
+        name = json["name"],
+        award_id = award_id,
+        stats = json["stats"]
+    )
         db.session.add(new_award)
         db.session.commit()
-        return redirect(url_for('home'))
-
     return render_template("create_award.html", title="Add a new Award", form=form)
 
-@app.route('/read/allawards')
-def read_awards():
+@app.route('/get/allawards', method=["GET"])
+def get_all_awards():
     all_awards = Awards.query.all()
-    awards_dict = {"awards": []}
+    json = {"awards": []}
     for award in all_awards:
-        awards_dict["awards"].append(
+        player =[]
+        for player in award.players:
+            award.append(        
             {
-                "description": award.description,
-                "completed": award.completed
+                "id": award.id,
+                "name": player.
             }
         )
     return jsonify(awards_dict)
