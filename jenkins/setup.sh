@@ -10,6 +10,10 @@ sudo apt-get install -y curl jq python3 -venv
 if [ ! -f "/usr/bin/docker" ]; then
    curl https://get.docker.com | sudo bash
    sudo usermod -aG docker jenkins
+<<<<<<< HEAD
+=======
+fi
+>>>>>>> 6cd155d9c47be53a89eb59013314c774217207ea
 
 # install docker compose 
 version=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | jq -r '.tag_name')
