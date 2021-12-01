@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 
-class TaskForm(FlaskForm):
-    description = StringField("Task Description", validators=[DataRequired()])
-    submit = SubmitField("Add Task")
+class AwardForm(FlaskForm):
+    description = StringField("Award Description", validators=[DataRequired()])
+    name = SelectField("Player_Name", choices=[])
+    submit = SubmitField("Add Award to a Player")

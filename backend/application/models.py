@@ -1,6 +1,9 @@
 from application import db
 
-class Tasks(db.Model):
+class Awards(db.Model):
+    class Players(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(30), nullable=False)
-    completed = db.Column(db.Boolean, nullable=False, default=False)
+    username = db.Column(db.String(30), nullable=False)
+    award_id = db.Column(db.Integer, db.ForeignKey('award.id'), nullable=False)
+    completed = db.Column(db.Boolean, nullable=False, defaclass Cities(db.Model):
+    

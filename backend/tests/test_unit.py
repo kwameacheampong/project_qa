@@ -81,9 +81,7 @@ class TestUpdate(TestBase):
         response = self.client.get(url_for('incomplete_task', id=1), follow_redirects=True)
         self.assertEqual(Tasks.query.get(1).completed, False)
         
-
 class TestDelete(TestBase):
-
     def test_delete_task(self):
         response = self.client.get(
             url_for('delete_task', id=1),

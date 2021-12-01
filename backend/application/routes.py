@@ -1,69 +1,73 @@
 from application import app, db
-from application.models import Tasks
-from application.forms import TaskForm
+from application.models import Awards
+from application.forms import AwardsForm
 from flask import render_template, request, redirect, url_for, jsonify
 from os import getenv
 
 @app.route('/')
 @app.route('/home')
 def home():
-    all_tasks = Tasks.query.all()
-    return render_template('index.html', title="Home", all_tasks=all_tasks)
+    Awards = award.query.all()
+    return render_template('index.html', title="Home", Awards=Awards)
 
-@app.route('/create/task', methods=['GET','POST'])
-def create_task():
-    form = TaskForm()
+@app.route('/create/award', methods=['GET','POST'])
+def create_awards():
+    form = AwardForm()
+    all_Awards = request.get(f"http://{backend_host}/read/allAwards").json()
+    for award in all_Awards["awards"]:
+      form.award.choices.append((award[id], award["name"]))
 
     if request.method == "POST":
-        new_task = Tasks(description=form.description.data)
-        db.session.add(new_task)
-        db.session.commit()
+        response = request.post(f"http://{backend_host}/create/award", json={"name": form.name.data})
+        new_awards = Awards(description=form.description.data)
+        app.logger.info(f"Response: {response.txt")
         return redirect(url_for('home'))
 
-    return render_template("create_task.html", title="Add a new Task", form=form)
+    return render_template("create_awards.html", title="Add a new awards", form=form)
 
-@app.route('/read/allTasks')
-def read_tasks():
-    all_tasks = Tasks.query.all()
-    tasks_dict = {"tasks": []}
-    for task in all_tasks:
-        tasks_dict["tasks"].append(
-            {
-                "description": task.description,
-                "completed": task.completed
+@app.route('/read/allAwards')
+def read_awards():
+     
+    Awards = award.query.all()
+    awards_dict = {"awards": []}
+    for awards in Awards:
+        awards_dict["awards"].append(   
+                      {
+                "description": awards.description,
+                "completed": awards.completed
             }
         )
-    return jsonify(tasks_dict)
+    return jsonify(awards_dict)
 
-@app.route('/update/task/<int:id>', methods=['GET','POST'])
-def update_task(id):
-    form = TaskForm()
-    task = Tasks.query.get(id)
+@app.route('/update/awards/<int:id>', methods=['GET','POST'])
+def update_awards(id):
+    form = awardsForm()
+    awards = awards.query.get(id)
 
     if request.method == "POST":
-        task.description = form.description.data
+        awards.description = form.description.data
         db.session.commit()
         return redirect(url_for('home'))
 
-    return render_template('update_task.html', task=task, form=form)
+    return render_template('update_awards.html', awards=awards, form=form)
 
-@app.route('/delete/task/<int:id>')
-def delete_task(id):
-    task = Tasks.query.get(id)
-    db.session.delete(task)
+@app.route('/delete/awards/<int:id>')
+def delete_awards(id):
+    awards = awards.query.get(id)
+    db.session.delete(awards)
     db.session.commit()
     return redirect(url_for('home'))
 
-@app.route('/complete/task/<int:id>')
-def complete_task(id):
-    task = Tasks.query.get(id)
-    task.completed = True
+@app.route('/complete/awards/<int:id>')
+def complete_awards(id):
+    awards = awards.query.get(id)
+    awards.completed = True
     db.session.commit()
     return redirect(url_for('home'))
 
-@app.route('/incomplete/task/<int:id>')
-def incomplete_task(id):
-    task = Tasks.query.get(id)
-    task.completed = False
+@app.route('/incomplete/awards/<int:id>')
+def incomplete_awards(id):
+    awards = awards.query.get(id)
+    awards.completed = False
     db.session.commit()
     return redirect(url_for('home'))
