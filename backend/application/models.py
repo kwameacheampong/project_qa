@@ -4,9 +4,9 @@ class Awards(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
     club = db.column(db.String(20), nullable=False)
-    stats = db.column(db.Interger(), nullable=False)
+    stats = db.column(db.Integer(), nullable=False)
 
-    players = db.relationship('players', backref = 'awards')    
+    players = db.relationship('Players', backref = 'awards')    
 
 class Players(db.Model):
     id = db.Column(db.Integer, primary_key=True)

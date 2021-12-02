@@ -1,28 +1,28 @@
 {% extends "layout.html" %}
 {% block body %}
 
-    <h2>Incomplete Tasks</h2>
-    {% for task in all_tasks %}
-    {% if task.completed == False %}
+    <h2>Incomplete Award</h2>
+    {% for award in all_award %}
+    {% if award.completed == False %}
         <p>
-            Task ID: {{ task.id }}<br>
-            Task Description: {{ task.description }}<br>
-            <a href="{{ url_for('update_task', id=task.id) }}">Edit</a>
-            <a href="{{ url_for('delete_task', id=task.id) }}">Delete</a>
-            <a href="{{ url_for('complete_task', id=task.id) }}">Complete</a>
+            Award ID: {{ award.id }}<br>
+            Award Description: {{ award.description }}<br>
+            <a href="{{ url_for('update_award', id=award.id) }}">Edit</a>
+            <a href="{{ url_for('delete_award', id=award.id) }}">Delete</a>
+            <a href="{{ url_for('complete_award', id=award.id) }}">Complete</a>
         </p>    
     {% endif %}
     {% endfor %}
     
-    <h2>Completed Tasks</h2>
-    {% for task in all_tasks %}
-    {% if task.completed == True %}
+    <h2>Completed Award</h2>
+    {% for award in all_award %}
+    {% if award.completed == True %}
         <p>
-            Task ID: {{ task.id }}<br>
-            Task Description: {{ task.description }}<br>
-            <a href="{{ url_for('update_task', id=task.id) }}">Edit</a>
-            <a href="{{ url_for('delete_task', id=task.id) }}">Delete</a>
-            <a href="{{ url_for('incomplete_task', id=task.id) }}">Incomplete</a>
+            Award ID: {{ award.id }}<br>
+            Award Description: {{ award.description }}<br>
+            <a href="{{ url_for('update_award', id=award.id) }}">Edit</a>
+            <a href="{{ url_for('delete_award', id=award.id) }}">Delete</a>
+            <a href="{{ url_for('incomplete_award', id=award.id) }}">Incomplete</a>
         </p>    
     {% endif %}
     {% endfor %}
