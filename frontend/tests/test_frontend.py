@@ -19,33 +19,33 @@ class TestViews(TestBase):
         response = self.client.get(url_for('home'))
         self.assert200(response)
     
-    def test_create_task_get(self):
-        response = self.client.get(url_for('create_task'))
+    def test_create_award_get(self):
+        response = self.client.get(url_for('create_award'))
         self.assert200(response)
 
-    def test_read_tasks_get(self):
-        response = self.client.get(url_for('read_tasks'))
+    def test_read_awards_get(self):
+        response = self.client.get(url_for('read_awards'))
         self.assert200(response)
 
-    def test_update_task_get(self):
-        response = self.client.get(url_for('update_task', id=1))
+    def test_update_award_get(self):
+        response = self.client.get(url_for('update_award', id=1))
         self.assert200(response)
 
 class TestRead(TestBase):
 
-    def test_read_home_tasks(self):
+    def test_read_home_awards(self):
         response = self.client.get(url_for('home'))
         self.assertIn(b"Run unit tests", response.data)
     
-    def test_read_tasks_dictionary(self):
-        response = self.client.get(url_for('read_tasks'))
+    def test_read_awards_dictionary(self):
+        response = self.client.get(url_for('read_awards'))
         self.assertIn(b"Run unit tests", response.data)
 
 class TestCreate(TestBase):
 
-    def test_create_task(self):
+    def test_create_award(self):
         response = self.client.post(
-            url_for('create_task'),
+            url_for('create_award'),
             data={"description": "Testing create functionality"},
             follow_redirects=True
         )
@@ -53,27 +53,27 @@ class TestCreate(TestBase):
     
 class TestUpdate(TestBase):
 
-    def test_update_task(self):
+    def test_update_award(self):
         response = self.client.post(
-            url_for('update_task', id=1),
+            url_for('update_award', id=1),
             data={"description": "Testing update functionality"},
             follow_redirects=True
         )
         self.assertIn(b"Testing update functionality", response.data)
     
-    #def test_complete_task(self):
-    #    response = self.client.get(url_for('complete_task', id=1), follow_redirects=True)
-    #    self.assertEqual(Tasks.query.get(1).completed, True)
+    #def test_complete_award(self):
+    #    response = self.client.get(url_for('complete_award', id=1), follow_redirects=True)
+    #    self.assertEqual(awards.query.get(1).completed, True)
     
-    #def test_incomplete_task(self):
-     #   response = self.client.get(url_for('incomplete_task', id=1), follow_redirects=True)
-    #    self.assertEqual(Tasks.query.get(1).completed, False)
+    #def test_incomplete_award(self):
+     #   response = self.client.get(url_for('incomplete_award', id=1), follow_redirects=True)
+    #    self.assertEqual(awards.query.get(1).completed, False)
         
 class TestDelete(TestBase):
 
-    def test_delete_task(self):
+    def test_delete_award(self):
         response = self.client.get(
-            url_for('delete_task', id=1),
+            url_for('delete_award', id=1),
             follow_redirects=True
         )
         self.assertNotIn(b"Run unit tests", response.data)
