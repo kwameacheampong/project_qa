@@ -12,6 +12,5 @@ class Players(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False)
     club = db.Column(db.String(20), nullable=False)
-    award_id = db.Column(db.Integer(), db.ForeignKey('award.id'), nullable=False)
+    award_id = db.Column(db.Integer(), nullable=False)
     stats =  db.Column(db.Integer(), nullable=False)
-    

@@ -6,13 +6,13 @@ from os import getenv
 @app.route('/')
 @app.route('/home')
 def home():
-    Awards = award.query.all()
+    Awards = awards.query.all()
     return render_template('index.html', title="Home", Awards=Awards)
 
 @app.route('/create/award', methods=['POST'])
 def create_awards():
     json = request.json
-    new_award = Award(
+    new_award = Awards(
         name = json["name"],
         club = json["club"],
         stats = json["stats"]
@@ -24,7 +24,7 @@ def create_awards():
 @app.route('/create/players/<int:id>', methods=['GET','POST'])
 def create_player(award_id):
     json = request.json
-    new_award = Award(
+    new_award = Awards(
         name = json["name"],
         award_id = award_id,
         club = json["club"],
@@ -36,7 +36,7 @@ def create_player(award_id):
 
 @app.route('/get/allAwards', methods=["GET"])
 def get_all_awards():
-    all_awards =Award.query.all()
+    all_awards = Awards.query.all()
     json = {"awards": []}
     for award in all_Awards:
         player = []
@@ -62,7 +62,7 @@ def get_all_awards():
 
 @app.route('/get/allPlayers/<int:id>', methods=['GET'])
 def get_player(id):     
-    players =Award.query.get(id).players
+    players = Awards.query.get(id).players
     json = {"players": []}
     for player in players:        
             json["players"].append(
@@ -76,7 +76,7 @@ def get_player(id):
 @app.route('/update/awards/<int:id>')
 def update_Awards(id):
     data = request.json
-    awards = Awards.query.get(id)
+    awards = Award.query.get(id)
     awards.updated = True
     db.session.commit()
     return redirect(url_for('home'))

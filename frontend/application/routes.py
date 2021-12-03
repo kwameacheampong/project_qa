@@ -8,7 +8,7 @@ backend = "award-project_backend:5000"
 
 @app.route('/', methods=["GET"])
 def home():
-    awards = requests.get(f"http://{backend}/get/allAwards").json()["awards"]
+    award = requests.get(f"http://{backend}/get/allAwards").json()["awards"]
     return render_template('index.html', title="Home", awards=awards)
 
 @app.route('/create/award', methods=['GET','POST'])
@@ -27,7 +27,7 @@ def create_award():
         app.logger.info(f"Response: {response.txt}")
         return redirect(url_for('home'))
        
-    return render_template("create_awards.html", title="Add a new Awards", form=form)
+    return render_template("create_awards.html", title="Add a new awards", form=form)
 
 @app.route('/create/player', methods=['GET','POST'])
 def create_player():
@@ -44,7 +44,7 @@ def create_player():
         app.logger.info(f"Response: {response.txt}")
         return redirect(url_for('home'))
        
-    return render_template("create_player.html", title="Add Players", form=form)
+    return render_template("create_player.html", title="Add alayers", form=form)
 
 
 @app.route('/read/allPlayer')
