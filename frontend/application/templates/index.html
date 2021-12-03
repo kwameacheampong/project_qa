@@ -1,30 +1,32 @@
 {% extends "layout.html" %}
 {% block body %}
-
-    <h2>Incomplete Award</h2>
-    {% for award in all_award %}
-    {% if award.completed == False %}
-        <p>
-            Award ID: {{ award.id }}<br>
-            Award Description: {{ award.description }}<br>
-            <a href="{{ url_for('update_award', id=award.id) }}">Edit</a>
-            <a href="{{ url_for('delete_award', id=award.id) }}">Delete</a>
-            <a href="{{ url_for('complete_award', id=award.id) }}">Complete</a>
-        </p>    
-    {% endif %}
-    {% endfor %}
+    {% for award in awards %}
+    <table>
+        <h2>{{ award["name"] }}</h2>
+        <tr>
+            <td><b>club</b></td>
+            <td>{{ award["club"] }}</td> 
+        </tr>
+        <tr>
+            <td><b>Stats</b></td>
+            <td>{{ award["stats"] }}</td> 
+        </tr>            
+        </tr>
+    </table>
     
-    <h2>Completed Award</h2>
-    {% for award in all_award %}
-    {% if award.completed == True %}
-        <p>
-            Award ID: {{ award.id }}<br>
-            Award Description: {{ award.description }}<br>
-            <a href="{{ url_for('update_award', id=award.id) }}">Edit</a>
-            <a href="{{ url_for('delete_award', id=award.id) }}">Delete</a>
-            <a href="{{ url_for('incomplete_award', id=award.id) }}">Incomplete</a>
-        </p>    
-    {% endif %}
-    {% endfor %}
+    <h3>Players of {{ award["name"] }}</h3>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Club</th>
+        </tr>
+        {% for player in award["players"] %}
+        <tr>
+            <td>{{ player["name"] }}</td> 
+            <td>{{ player["club"] }}</td> 
+        </tr>
+        {% endfor %}
+    </table>
 
+    {% endfor %}
 {% endblock body %}

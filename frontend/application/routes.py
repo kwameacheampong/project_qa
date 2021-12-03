@@ -1,28 +1,30 @@
-from application import app, db
-from wtforms.validators import DataRequired
-from flask_wtf import FlaskForm
+from application import app
+from flask import render_template, request, redirect, url_for, jsonify
+from application.forms import CreateAwardForm, CreatePlayerForm
+import requests
+from os import getenv
 
-backend = getenv("BACKEND_HOSTNAME")
+backend = "award-project_backend:5000"
 
 @app.route('/', methods=["GET"])
 def home():
-    awards = request.get(f"http://{backend}/get/allAwards").json()["awards"]
-    return render_template('index.html', title="Home", Awards=Awards)
+    awards = requests.get(f"http://{backend}/get/allAwards").json()["awards"]
+    return render_template('index.html', title="Home", awards=awards)
 
 @app.route('/create/award', methods=['GET','POST'])
 def create_award():
     form = CreateAwardForm()
 
     if request.method == "POST":
-        response = request.post(
-            f"http://{backend_host}/create/award", 
+        response = requests.post(
+            f"http://{backend}/create/award", 
             json={
                 "name": form.name.data,
                 "club": form.name.data,
                 "stats": form.name.data
             }
         )
-        app.logger.info(f"Response: {response.txt")
+        app.logger.info(f"Response: {response.txt}")
         return redirect(url_for('home'))
        
     return render_template("create_awards.html", title="Add a new Awards", form=form)
@@ -32,14 +34,14 @@ def create_player():
     form = CreatePlayerForm()
 
     if request.method == "POST":
-        response = request.post(
-            f"http://{backend_host}/create/player/{award_id}",
+        response = requests.post(
+            f"http://{backend}/create/player/{award_id}",
             json={
                 "name": form.name.data,
                 "club": form.name.data,
             }
         )
-        app.logger.info(f"Response: {response.txt")
+        app.logger.info(f"Response: {response.txt}")
         return redirect(url_for('home'))
        
     return render_template("create_player.html", title="Add Players", form=form)

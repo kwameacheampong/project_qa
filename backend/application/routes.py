@@ -1,6 +1,5 @@
 from application import app, db
-from application.models import Awards
-from application.forms import AwardsForm
+from application.models import Awards, Players
 from flask import render_template, request, redirect, url_for, jsonify
 from os import getenv
 
@@ -15,20 +14,20 @@ def create_awards():
     json = request.json
     new_award = Award(
         name = json["name"],
-        club = json["club"]
+        club = json["club"],
         stats = json["stats"]
     )
     db.session.add(new_award)
     db.session.commit()
-    return f"Award '{new_award.name}'' added to database"
+    return f"Award '{new_award.name}' added to database"
 
 @app.route('/create/players/<int:id>', methods=['GET','POST'])
 def create_player(award_id):
-     json = request.json
+    json = request.json
     new_award = Award(
         name = json["name"],
         award_id = award_id,
-        club = json["club"]
+        club = json["club"],
         stats = json["stats"]
     )
     db.session.add(new_award)
@@ -44,7 +43,7 @@ def get_all_awards():
         for player in award.players:
             player.append(
                 {
-                    "id": [player.id,
+                    "id": player.id,
                     "name": player.name,
                     "award": player.award_id,
                     "club": player.club
@@ -55,7 +54,7 @@ def get_all_awards():
                 "id":award.id,
                 "name": award.name,
                 "club": award.club,
-                "stats":award.stats,
+                "stats": award.stats,
                 "player": players
             }                    
         )
@@ -68,14 +67,12 @@ def get_player(id):
     for player in players:        
             json["players"].append(
                 {
-                    "id": [player.id,
+                    "id": player.id,
                     "name": player.name,
                     "award": player.award_id,
                     "club": player.club
                 }
             )
-        return jsonify(json)
-
 @app.route('/update/awards/<int:id>')
 def update_Awards(id):
     data = request.json
