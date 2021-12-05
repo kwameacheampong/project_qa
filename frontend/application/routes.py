@@ -8,7 +8,7 @@ backend = "award-project_backend:5000"
 
 @app.route('/', methods=["GET"])
 def home():
-    award = requests.get(f"http://{backend}/get/allAwards").json()["awards"]
+    awards = requests.get(f"http://{backend}/get/allAwards").json()["awards"]
     return render_template('index.html', title="Home", awards=awards)
 
 @app.route('/create/award', methods=['GET','POST'])
