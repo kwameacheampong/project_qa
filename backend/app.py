@@ -1,4 +1,4 @@
-from application import app, db
+from application import app, db, FlaskForm
 from os import getenv
 
 if __name__ == "__main__":

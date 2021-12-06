@@ -3,13 +3,13 @@ from application.models import Awards, Players
 from flask import render_template, request, redirect, url_for, jsonify
 from os import getenv
 
-@app.route('/')
-@app.route('/home')
+@app.route("/")
+@app.route("/home")
 def home():
     Awards = awards.query.all()
-    return render_template('index.html', title="Home", Awards=Awards)
+    return render_template("index.html", title="Home", Award=Award, Playe=Player)
 
-@app.route('/create/award', methods=['POST'])
+@app.route("/create/awards", methods=['POST'])
 def create_awards():
     json = request.json
     new_award = Awards(
@@ -19,24 +19,24 @@ def create_awards():
     )
     db.session.add(new_award)
     db.session.commit()
-    return f"Award '{new_award.name}' added to database"
+    return f"Awards {new_award.name} added to database"
 
-@app.route('/create/players/<int:id>', methods=['GET','POST'])
+@app.route('/create/player/<int:id>', methods=['GET','POST'])
 def create_player(award_id):
     json = request.json
     new_award = Awards(
         name = json["name"],
-        award_id = award_id,
+        award_id = ["award_id"],
         club = json["club"],
         stats = json["stats"]
     )
     db.session.add(new_award)
     db.session.commit()
-    return f"Award '{new_award.name}' added to database"
+    return f"Awards {new_award.name} added to database"
 
-@app.route('/get/allAwards', methods=["GET"])
+@app.route("/get/allAwards", methods=["GET"])
 def get_all_awards():
-    all_awards = Awards.query.all()
+    all_award = Award.query.all()
     json = {"awards": []}
     for award in all_Awards:
         player = []
@@ -49,7 +49,7 @@ def get_all_awards():
                     "club": player.club
                 }
             )
-        json["awards"].append(
+        json["award"].append(
             {
                 "id":award.id,
                 "name": award.name,
@@ -60,7 +60,7 @@ def get_all_awards():
         )
     return jsonify(json)
 
-@app.route('/get/allPlayers/<int:id>', methods=['GET'])
+@app.route("/get/allPlayers/<int:id>", methods=['GET'])
 def get_player(id):     
     players = Awards.query.get(id).players
     json = {"players": []}
@@ -73,7 +73,7 @@ def get_player(id):
                     "club": player.club
                 }
             )
-@app.route('/update/awards/<int:id>')
+@app.route("/update/awards/<int:id>")
 def update_Awards(id):
     data = request.json
     awards = Award.query.get(id)
