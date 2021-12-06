@@ -1,6 +1,6 @@
 from application import app
 from flask import render_template, request, redirect, url_for, jsonify
-from application.forms import CreateAwardForm, CreatePlayerForm
+from application.forms import FlaskForm
 import requests
 from os import getenv
 
@@ -8,16 +8,16 @@ backend = "award-project_backend:5000"
 
 @app.route('/', methods=["GET"])
 def home():
-    award = requests.get(f"http://{backend}/read/allAwards").json()["awards"]
+    award = requests.get (f"http://{backend}/get Allaward").json()["awards"]
     return render_template('index.html', title="Home", awards=awards)
 
-@app.route('/create/award', methods=['GET','POST'])
-def create_award():
-    form = CreateAwardForm()
+@app.route('/create/awards', methods=['GET','POST'])
+def create_awards():
+    form = CreateAwardsForm()
 
     if request.method == "POST":
         response = requests.post(
-            f"http://{backend}/create/award", 
+            f"http://{backend}/create/awards", 
             json={
                 "name": form.name.data,
                 "club": form.name.data,
@@ -29,13 +29,13 @@ def create_award():
        
     return render_template("create_awards.html", title="Add a new awards", form=form)
 
-@app.route('/create/player', methods=['GET','POST'])
-def create_player():
-    form = CreatePlayerForm()
+@app.route('/create/players', methods=['GET','POST'])
+def create_players():
+    form = CreatePlayersForm()
 
     if request.method == "POST":
         response = requests.post(
-            f"http://{backend}/create/player/{award_id}",
+            f"http://{backend}/create/players/{award_id}",
             json={
                 "name": form.name.data,
                 "club": form.name.data,
@@ -44,15 +44,15 @@ def create_player():
         app.logger.info(f"Response: {response.txt}")
         return redirect(url_for('home'))
        
-    return render_template("create_player.html", title="Add alayers", form=form)
+    return render_template("create_players.html", title="Add alayers", form=form)
 
 
-@app.route('/read/allPlayer')
-def read_player():
+@app.route('/read/allPlayers')
+def read_players():
      
     Awards = award.query.all()
     awards_dict = {"awards": []}
-    for awards in Awards:
+    for award in Awards:
         awards_dict["awards"].append(   
                       {
                 "description": awards.description,
@@ -66,7 +66,7 @@ def update_Awards(id):
     form = AwardsForm()
     awards = Awards.query.get(id)
 
-    if request.method == "POST":
+    if requests.method == "POST":
         awards.description = form.description.data
         db.session.commit()
         return redirect(url_for('home'))

@@ -2,19 +2,19 @@
 {% block body %}
     {% for award in awards %}
     <table>
-        <h2>{{ award["name"] }}</h2>
+        <h2>{{ awards["name"] }}</h2>
         <tr>
             <td><b>club</b></td>
-            <td>{{ award["club"] }}</td> 
+            <td>{{ awards["club"] }}</td> 
         </tr>
         <tr>
             <td><b>Stats</b></td>
-            <td>{{ award["stats"] }}</td> 
+            <td>{{ awards["stats"] }}</td> 
         </tr>            
         </tr>
     </table>
     
-    <h3>Players of {{ award["name"] }}</h3>
+    <h3>Players of {{ awards["name"] }}</h3>
     <table>
         <tr>
             <th>Name</th>

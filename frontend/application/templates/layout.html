@@ -4,10 +4,10 @@
         <title>QA AWARDS NIGHT 2021{{ title }}</title>
     </head>
     <body style="background-color: rgb(119, 106, 61);">
-        <h1>Project-qa - {{ title }}</h1>
-            <a href="{{ url_for('create_award') }}">Add Award</a>
-            <a href="{{ url_for('create_player') }}">Add Player</a>
+        <h1>QA AWARDS NIGHT 2021{{ title }}</h1>
+            <a href="{{ url_for('create_awardS') }}">Add Award</a>
+            <a href="{{ url_for('create_playerS') }}">Add Player</a>
         {% block body %}
-        {% endblock body %}
+        {% endblock %}
     </body>
 </html>
